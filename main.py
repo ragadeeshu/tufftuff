@@ -27,6 +27,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         parsed_json = json.loads(message)
+        print(parsed_json)
         commands.queue(parsed_json)
 
     def on_close(self):

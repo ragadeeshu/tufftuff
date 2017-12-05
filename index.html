@@ -5,39 +5,47 @@
   <meta charset="utf-8" />
   <style type="text/css">
 
-  body {
-    /*This is important for the train to look good*/
-    margin: 0px;
-    padding: 0px;
-  }
+    body {
+      /*This is important for the train to look good*/
+      margin: 0px;
+      padding: 0px;
+    }
 
-  .Site {
-    /*Footer magic*/
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
+    .Site {
+      /*Footer magic*/
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
 
-  .Site-content {
-    /*Footer magic*/
-    flex: 1;
-  }
+    .Site-content {
+      /*Footer magic*/
+      flex: 1;
+    }
 
-  footer {
-    /*Make the train semlessly appear without the need for scrollbars*/
-    overflow-x: hidden;
-  }
+    footer {
+      /*Make the train semlessly appear without the need for scrollbars*/
+      overflow-x: hidden;
+    }
 
   </style>
   <link rel="stylesheet" type="text/css" href="{{ static_url("style.css") }}">
   <script src="http://code.jquery.com/jquery.min.js"></script>
   <script src="{{ static_url("train.js") }}"></script>
-  <script>
+<script>
 
   function train(){
     $("#train").text(trains[trainindex]);
     trainindex++;
     trainindex%=trains.length;
+  }
+
+  function setState(state){
+    for (const type of Object.keys(state)) {
+      for (const id of Object.keys(state[type])) {
+        $("."+type+"[value='"+id+"']:first").find('code:first').text(type[id]);
+      }
+    }
   }
 
   // log function
@@ -46,6 +54,23 @@
     console.log(data);
   };
 
+  switchClick = function() {
+    var value = $(this).find('.switchState:first').text();
+    if (value == 'straight')
+      value = 'curve';
+    else
+      value = 'straight';
+    switchMessage={
+      "type":"switch",
+      "id":$(this).val(),
+      "value":value
+    };
+    ws.send(JSON.stringify(switchMessage));
+    // alert($(this).val());
+    // alert($(this).attr('id'));
+    // alert($(this).find('code:first').text());
+  }
+
   // begin page load code
   var ws;
   $(document).ready(function () {
@@ -53,12 +78,13 @@
     $("#connection").show();
     setInterval(train, 40);
 
+    $('.switch').on('click', switchClick);
+
     // Websocket stuff
     ws = new WebSocket("ws://" + window.location.host + "/ws");
     ws.onmessage = function(evt) {
       var message = JSON.parse(evt.data);
-      //For debug purposes
-      log(message);
+      setState(message);
     };
 
     ws.onclose = function(evt) {
@@ -66,7 +92,7 @@
         function(){
           $("#connection").fadeIn("slow");
         }
-      );
+        );
     };
 
     ws.onopen = function(evt) {
@@ -74,10 +100,11 @@
         function(){
           $("div#controls").fadeIn("slow");
         }
-      );
+        );
     };
-  });
-  </script>
+  }
+  );
+</script>
 </head>
 
 <body class="Site">
@@ -87,11 +114,10 @@
       <label id="connection">NO CONNECTION<br>Wait a while, or refresh the page.</label>
     </div>
     <div id ="controls">
-    </div>
+    <button class="switch" value="1">Switch 1<br><code class="state">straight</code></button>
     <div id="terminal">
     </div>
   </main>
   <footer><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
 </body>
-
 </html>

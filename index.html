@@ -1,0 +1,97 @@
+<!-- \<!doctype html> -->
+<html>
+<head>
+  <title>tufftuff</title>
+  <meta charset="utf-8" />
+  <style type="text/css">
+
+  body {
+    /*This is important for the train to look good*/
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .Site {
+    /*Footer magic*/
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .Site-content {
+    /*Footer magic*/
+    flex: 1;
+  }
+
+  footer {
+    /*Make the train semlessly appear without the need for scrollbars*/
+    overflow-x: hidden;
+  }
+
+  </style>
+  <link rel="stylesheet" type="text/css" href="{{ static_url("style.css") }}">
+  <script src="http://code.jquery.com/jquery.min.js"></script>
+  <script src="{{ static_url("train.js") }}"></script>
+  <script>
+
+  function train(){
+    $("#train").text(trains[trainindex]);
+    trainindex++;
+    trainindex%=trains.length;
+  }
+
+  // log function
+  log = function(data){
+    $("div#terminal").prepend("</br>" +data);
+    console.log(data);
+  };
+
+  // begin page load code
+  var ws;
+  $(document).ready(function () {
+    $("div#controls").hide();
+    $("#connection").show();
+    setInterval(train, 40);
+
+    // Websocket stuff
+    ws = new WebSocket("ws://" + window.location.host + "/ws");
+    ws.onmessage = function(evt) {
+      var message = JSON.parse(evt.data);
+      //For debug purposes
+      log(message);
+    };
+
+    ws.onclose = function(evt) {
+      $("div#controls").fadeOut("slow").promise().done(
+        function(){
+          $("#connection").fadeIn("slow");
+        }
+      );
+    };
+
+    ws.onopen = function(evt) {
+      $("#connection").fadeOut("slow").promise().done(
+        function(){
+          $("div#controls").fadeIn("slow");
+        }
+      );
+    };
+  });
+  </script>
+</head>
+
+<body class="Site">
+  <header><h1>tufftuff</h1></header>
+  <main class="Site-content">
+    <div id="connection_details">
+      <label id="connection">NO CONNECTION<br>Wait a while, or refresh the page.</label>
+    </div>
+    <div id ="controls">
+    </div>
+    <div id="terminal">
+    </div>
+  </main>
+  <footer><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
+</body>
+
+</html>

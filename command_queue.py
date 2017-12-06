@@ -9,17 +9,20 @@ class CommandQueue:
     def __init__(self, clients):
         self._hardware = hardware.DummyHardware();
         self._clients = clients
-        self._commandList = []
+        self._command_list = []
         self._event = Event()
         self._hardware_change_applier = Thread(target=self.do_next, args=())
         self._hardware_change_applier.start()
         self.lock = Lock()
 
+        self._hardware.set_logical_state({'type':'switch', 'id':'1', 'value':'straight'})
+        self.queue({'type':'switch', 'id':'1', 'value':'straight'})
+
     def queue(self, command):
         self.lock.acquire()
         try:
-            self._commandList.extend(command)
-            self._hardware.set_logical_state(command['type'], command['id'], command['value'])
+            self._command_list.append(command)
+            self._hardware.set_logical_state(command)
             self._event.set()
         finally:
             self.lock.release()
@@ -32,9 +35,9 @@ class CommandQueue:
             self._event.clear()
             self.lock.acquire()
             try:
-                while(self._commandList):
-                    self._hardware.set_physical_state(self._commandList[0])
-                    del(self._songlist[0])
+                while self._command_list:
+                    self._hardware.set_physical_state(self._command_list[0])
+                    del(self._command_list[0])
             finally:
                 self.lock.release()
 

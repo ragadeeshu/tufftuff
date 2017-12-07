@@ -12,8 +12,9 @@ class DummyHardware:
         print("Dummy state set")
 
     def get_logical_state(self):
-        return "DummyHardware says hi!"
+        # print("Getting dummy state:")
+        # print(self._state)
+        return self._state;
 
 class RealHardware(DummyHardware):
-    def get_logical_state(self):
-        return "RealHardware says hi!"
+    pass

@@ -43,7 +43,7 @@
   function setState(state){
     for (const type of Object.keys(state)) {
       for (const id of Object.keys(state[type])) {
-        $("."+type+"[value='"+id+"']:first").find('code:first').text(type[id]);
+        $("."+type+"[value='"+id+"']").find('.state').text(state[type][id]);
       }
     }
   }
@@ -55,7 +55,7 @@
   };
 
   switchClick = function() {
-    var value = $(this).find('.switchState:first').text();
+    var value = $(this).find('.state').text();
     if (value == 'straight')
       value = 'curve';
     else
@@ -66,9 +66,6 @@
       "value":value
     };
     ws.send(JSON.stringify(switchMessage));
-    // alert($(this).val());
-    // alert($(this).attr('id'));
-    // alert($(this).find('code:first').text());
   }
 
   // begin page load code
@@ -108,13 +105,14 @@
 </head>
 
 <body class="Site">
-  <header><h1>tufftuff</h1></header>
+  <!-- <header><h1>tufftuff</h1></header> -->
   <main class="Site-content">
     <div id="connection_details">
       <label id="connection">NO CONNECTION<br>Wait a while, or refresh the page.</label>
     </div>
     <div id ="controls">
     <button class="switch" value="1">Switch 1<br><code class="state">straight</code></button>
+    <button class="switch" value="2">Switch 2<br><code class="state">straight</code></button>
     <div id="terminal">
     </div>
   </main>

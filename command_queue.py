@@ -17,6 +17,8 @@ class CommandQueue:
 
         self._hardware.set_logical_state({'type':'switch', 'id':'1', 'value':'straight'})
         self.queue({'type':'switch', 'id':'1', 'value':'straight'})
+        self._hardware.set_logical_state({'type':'switch', 'id':'2', 'value':'straight'})
+        self.queue({'type':'switch', 'id':'2', 'value':'straight'})
 
     def queue(self, command):
         self.lock.acquire()

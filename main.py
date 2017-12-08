@@ -16,7 +16,6 @@ if len(sys.argv) > 1 and sys.argv[1] == "--real":
     type = 'real'
 else:
     type = 'dummy'
-print(type)
 clients = connections.Connections()
 commands = CommandQueue(clients, type)
 

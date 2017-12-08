@@ -9,8 +9,9 @@ class RealHardware(DummyHardware):
 
     def set_switch_state(self, command):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], RealHardware.switch_position[command['id']][command['value']])
-        sleep(0.2)
+        sleep(0.4)
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
+        sleep(0.2)
 
 
     def __init__(self):

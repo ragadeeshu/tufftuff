@@ -15,7 +15,7 @@ class RealHardware(DummyHardware):
 
     def __init__(self):
         super().__init__()
-        self._command_functions = {'switcha' : self.set_switch_state
+        self._command_functions = {'switch' : self.set_switch_state
         }
 
 

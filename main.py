@@ -8,11 +8,17 @@ import tornado.web
 import socket
 import json
 import connections
+import sys
 
 from command_queue import CommandQueue
 
+if len(sys.argv) > 1 and sys.argv[1] == "--real":
+    type = 'real'
+else:
+    type = 'dummy'
+print(type)
 clients = connections.Connections()
-commands = CommandQueue(clients)
+commands = CommandQueue(clients, type)
 
 class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous

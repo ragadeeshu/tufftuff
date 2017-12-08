@@ -15,6 +15,3 @@ class DummyHardware:
         # print("Getting dummy state:")
         # print(self._state)
         return self._state;
-
-class RealHardware(DummyHardware):
-    pass

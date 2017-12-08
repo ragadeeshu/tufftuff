@@ -6,8 +6,14 @@ from threading import Event
 from threading import Lock
 import time
 class CommandQueue:
-    def __init__(self, clients):
-        self._hardware = hardware.DummyHardware();
+    def __init__(self, clients, type):
+        if type == 'dummy':
+            self._hardware = hardware.DummyHardware();
+        else:
+            
+            real_hardware = __import__('real_hardware')
+            self._hardware = real_hardware.RealHardware();
+
         self._clients = clients
         self._command_list = []
         self._event = Event()

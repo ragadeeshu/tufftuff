@@ -56,10 +56,18 @@
           $("."+type+"[value='"+id+"']").find('.state').text(state[type][id]);
         }
       } else if (type == "throttle") {
-        throttle.setValue(state[type]["1"]);
+        //shift value received from 2-14 to 1-13
+        var value = state[type]["1"]
+        if (value < 0) {
+          ++value;
+        } else if (value > 0) {
+          --value;
+        }
+        throttle.setValue(value);
       } else if (type == "lights") {
-          $('.lights')[0].state = state[type]["1"];
-          $("#lights_image").attr("src", "./static/headlight_"+state[type]["1"]+".png");
+          var value = state[type]["1"]
+          $('.lights')[0].state = value;
+          $("#lights_image").attr("src", "./static/headlight_"+value+".png");
       }
     }
   }
@@ -117,10 +125,11 @@
 
   throttleChange = function(event) {
     var value = event.value;
-    if (value == 1) {
-        value = 2;
-    } else if (value == -1) {
-        value = -2;
+    //"1" is emergency stop, so shift value sent from 1-13 to 2-14
+    if (value < 0) {
+        --value;
+    } else if (value > 0) {
+        ++value;
     }
     throttleMessage={
         "type":"throttle",
@@ -149,8 +158,8 @@
         editableTooltip: false,
         radius: 105,
         width: 16,
-        min: -14,
-        max: 14,
+        min: -13,
+        max: 13,
         value: 0,
         handleSize: 0,
         handleShape: "square",

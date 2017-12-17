@@ -55,8 +55,11 @@
         for (const id of Object.keys(state[type])) {
           $("."+type+"[value='"+id+"']").find('.state').text(state[type][id]);
         }
-      } else {
+      } else if (type == "throttle") {
         throttle.setValue(state[type]["1"]);
+      } else if (type == "lights") {
+          $('.lights')[0].state = state[type]["1"];
+          $("#lights_image").attr("src", "./static/headlight_"+state[type]["1"]+".png");
       }
     }
   }
@@ -92,6 +95,21 @@
       ws.send(JSON.stringify(throttleMessage));
   }
 
+  lightsClick = function() {
+      var state = $('.lights')[0].state
+      if (state == "off") {
+          state = "on";
+      } else {
+          state = "off";
+      }
+      lightsMessage={
+          "type":"lights",
+          "id":"1",
+          "value":state
+      };
+      ws.send(JSON.stringify(lightsMessage));
+  }
+
   var throttle;
   throttleCreated = function() {
       throttle = this;
@@ -122,6 +140,8 @@
     $('.switch').on('click', switchClick);
                     
     $('.stop').on('click', stopClick);
+                    
+    $('.lights').on('click', lightsClick);
                     
     $("#throttle").roundSlider({
         animation: false,
@@ -184,6 +204,7 @@
             <button class="switch" value="4">Switch 4<br><code class="state">straight</code></button>
         </div>
         <div id="loco" align="center">
+            <button class="lights"><img id="lights_image" src="./static/headlight_on.png" height="50" width="50" /></button>
             <div class="rslider" id="throttle"></div>
             <button class="stop">STOP</button>
         </div>

@@ -53,7 +53,15 @@
     for (const type of Object.keys(state)) {
       if (type == "switch") {
         for (const id of Object.keys(state[type])) {
-          $("."+type+"[value='"+id+"']").find('.state').text(state[type][id]);
+          var value = state[type][id]
+          var direction;
+          if (parseInt(id)%2) {
+              direction = "left";
+          } else {
+              direction="right";
+          }
+          $("."+type+"[value='"+id+"']").data("state", value);
+          $("#switch"+id+"_image").attr("src", "./static/switch_"+direction+"_"+value+".png");
         }
       } else if (type == "throttle") {
         //shift value received from 2-14 to 1-13
@@ -66,7 +74,7 @@
         throttle.setValue(value);
       } else if (type == "lights") {
           var value = state[type]["1"]
-          $('.lights')[0].state = value;
+          $('.lights').data("state", value);
           $("#lights_image").attr("src", "./static/headlight_"+value+".png");
       }
     }
@@ -79,11 +87,11 @@
   };
 
   switchClick = function() {
-    var value = $(this).find('.state').text();
-    if (value == 'straight')
-      value = 'curve';
-    else
+    var value = $(this).data("state");
+    if (value == 'curve')
       value = 'straight';
+    else
+      value = 'curve';
     switchMessage={
       "type":"switch",
       "id":$(this).val(),
@@ -104,7 +112,7 @@
   }
 
   lightsClick = function() {
-      var state = $('.lights')[0].state
+      var state = $('.lights').data("state")
       if (state == "off") {
           state = "on";
       } else {
@@ -207,10 +215,10 @@
     </div>
     <div id ="controls">
         <div id="switches" align="center">
-            <button class="switch" value="1">Switch 1<br><code class="state">straight</code></button>
-            <button class="switch" value="2">Switch 2<br><code class="state">straight</code></button>
-            <button class="switch" value="3">Switch 3<br><code class="state">straight</code></button>
-            <button class="switch" value="4">Switch 4<br><code class="state">straight</code></button>
+            <button class="switch" value="1"><img id="switch1_image" src="./static/switch_left_straight.png" /></button>
+            <button class="switch" value="2"><img id="switch2_image" src="./static/switch_right_straight.png" /></button>
+            <button class="switch" value="3"><img id="switch3_image" src="./static/switch_left_straight.png" /></button>
+            <button class="switch" value="4"><img id="switch4_image" src="./static/switch_right_straight.png" /></button>
         </div>
         <div id="loco" align="center">
             <button class="lights"><img id="lights_image" src="./static/headlight_on.png" height="50" width="50" /></button>

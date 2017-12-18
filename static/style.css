@@ -1,5 +1,46 @@
+body {
+	background: #222;
+	color:#d8761f;
+}
+
+button {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: transparent;
+	transition: all .05s;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  cursor: pointer;
+	position:relative;
+  overflow: hidden;
+  border: 1px solid;
+  font: normal 19px/1 "Acme", Helvetica, sans-serif;
+  color: rgba(0,0,0,1);
+  text-align: center;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background: #ffffff;
+  -webkit-box-shadow: 3px 3px 0 0 rgba(0,0,0,0.8) ;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.8) ;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+}
+button:focus {
+	outline:0;
+}
+
+button:active {
+	transform: translate(2px, 2px);
+	background-color: #BBBBBB;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.8) ;
+  box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.8) ;
+}
+
 #train {
 	font-size: .5em;
+}
+
+#connection_details {
+	text-align: center;
 }
 
 #switches {
@@ -30,7 +71,7 @@
 #throttle .rs-handle  {
     background-color: transparent;
     border: 8px solid transparent;
-    border-right-color: black;
+    border-right-color: #d8761f;
     margin: -11px 0px 0px 18px !important;
     border-width: 11px 85px 11px 0px;
 }
@@ -40,14 +81,25 @@
     position: absolute;
     height: 22px;
     width: 22px;
-    background: black;
+    background: #d8761f;
     right: -11px;
     bottom: -11px;
     border-radius: 100px;
 }
-#throttle .rs-range-color  {
-    background-color: #DB5959;
-}
-#throttle .rs-path-color  {
-    background-color: #F0C5C5;
-}
+
+.rs-seperator { border: 100px solid #999999; }
+.rs-border { border: 2px solid #999999;
+background-color: #F0C5C5; }
+.rs-path-color { background-color: #F0C5C5; }
+.rs-range-color { background-color: #DB5959; }
+.rs-bg-color { background-color: #222; }
+.rs-handle { background-color: #838383; }
+.rs-handle-dot { background-color: #FFFFFF; }
+.rs-handle-dot:after { background-color: #838383; }
+
+/*#throttle .rs-range-color  {*/
+    /*background-color: #DB5959;*/
+/*}*/
+/*#throttle .rs-path-color  {*/
+    /*background-color: #F0C5C5;*/
+/*}*/

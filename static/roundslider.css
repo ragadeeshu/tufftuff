@@ -48,8 +48,8 @@
     transform-origin: 100% 100%;
 }
 .rs-rounded .rs-seperator, .rs-split .rs-path {
-    -webkit-background-clip: padding-box; 
-    -moz-background-clip: padding; 
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
     background-clip: padding-box;
 }
 .rs-control.rs-error
@@ -104,7 +104,7 @@ div.rs-block { -webkit-border-radius: 1000px; border-radius: 1000px; }
 .rs-overlay, .rs-overlay1, .rs-overlay2
 {
     position: absolute;
-    background-color: white;
+    background-color: transparent;
     z-index: 3;
     top: 0;
     height: 50%;
@@ -161,7 +161,7 @@ div.rs-block { -webkit-border-radius: 1000px; border-radius: 1000px; }
     z-index: 10;
 }
 .full .rs-tooltip { top: 50%; left: 50%; }
-.bottom .rs-tooltip { top: 0; } 
+.bottom .rs-tooltip { top: 0; }
 .top .rs-tooltip { bottom: 0; }
 .right .rs-tooltip { left: 0; }
 .left .rs-tooltip { right: 0; }
@@ -187,13 +187,11 @@ div.rs-block { -webkit-border-radius: 1000px; border-radius: 1000px; }
 }
 
 /*** theming - colors ***/
-.rs-seperator { border: 1px solid #AAAAAA; }
+/*.rs-seperator { border: 1px solid #AAAAAA; }
 .rs-border { border: 1px solid #AAAAAA; }
 .rs-path-color { background-color: #FFFFFF; }
 .rs-range-color { background-color: #54BBE0; }
 .rs-bg-color { background-color: #FFFFFF; }
 .rs-handle { background-color: #838383; }
 .rs-handle-dot { background-color: #FFFFFF; }
-.rs-handle-dot:after { background-color: #838383; }
-
-
+.rs-handle-dot:after { background-color: #838383; }*/

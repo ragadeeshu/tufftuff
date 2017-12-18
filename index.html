@@ -147,6 +147,34 @@
     ws.send(JSON.stringify(throttleMessage));
   }
 
+  function openSocket() {
+      ws = new WebSocket("ws://" + window.location.host + "/ws");
+      ws.onmessage = function(evt) {
+          var message = JSON.parse(evt.data);
+          setState(message);
+      };
+      
+      ws.onclose = function(evt) {
+          $("div#controls").fadeOut("slow").promise().done(
+            function(){
+                $("#connection").fadeIn("slow").promise().done(
+                    function(){
+                        openSocket();
+                    }
+                );
+            }
+          );
+      };
+      
+      ws.onopen = function(evt) {
+          $("#connection").fadeOut("slow").promise().done(
+            function(){
+                $("div#controls").fadeIn("slow");
+            }
+          );
+      };
+  }
+
   // begin page load code
   var ws;
   $(document).ready(function () {
@@ -178,29 +206,7 @@
         drag: throttleChange
     });
     
-
-    // Websocket stuff
-    ws = new WebSocket("ws://" + window.location.host + "/ws");
-    ws.onmessage = function(evt) {
-      var message = JSON.parse(evt.data);
-      setState(message);
-    };
-
-    ws.onclose = function(evt) {
-      $("div#controls").fadeOut("slow").promise().done(
-        function(){
-          $("#connection").fadeIn("slow");
-        }
-        );
-    };
-
-    ws.onopen = function(evt) {
-      $("#connection").fadeOut("slow").promise().done(
-        function(){
-          $("div#controls").fadeIn("slow");
-        }
-        );
-    };
+    openSocket();
  
   }
   );

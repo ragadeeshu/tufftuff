@@ -43,10 +43,23 @@
   
 <script>
 
+  var trainstopped = true;
   function train(){
-    $("#train").text(trains[trainindex]);
-    trainindex++;
+    var speed = throttle.getValue();
+    if (speed>0) {
+        trainindex++;
+    } else if (speed<0) {
+        trainindex--;
+    }
+    trainindex+=trains.length;
     trainindex%=trains.length;
+    $("#train").text(trains[trainindex]);
+    if (speed == 0) {
+        trainstopped = true;
+    } else {
+        trainstopped = false;
+        setTimeout(train, 280/Math.abs(speed));
+    }
   }
 
   function setState(state){
@@ -72,6 +85,9 @@
           --value;
         }
         throttle.setValue(value);
+        if (trainstopped) {
+            train();
+        }
       } else if (type == "lights") {
           var value = state[type]["1"]
           $('.lights').data("state", value);
@@ -187,7 +203,6 @@
   $(document).ready(function () {
     $("div#controls").hide();
     $("#connection").hide();
-    setInterval(train, 40);
 
     $('.switch').on('click', switchClick);
                     
@@ -241,6 +256,6 @@
     <div id="terminal">
     </div>
   </main>
-  <footer><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
+  <footer class="trainfooter"><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
 </body>
 </html>

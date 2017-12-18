@@ -175,6 +175,13 @@
       };
   }
 
+  //prevent zoom & bounce scroll (and also enables button touch effects???)
+  $(document).bind('touchmove',
+    function(e) {
+        e.preventDefault();
+    }
+  );
+
   // begin page load code
   var ws;
   $(document).ready(function () {

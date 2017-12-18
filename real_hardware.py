@@ -1,6 +1,7 @@
 from hardware import DummyHardware
 from time import sleep
 import pigpio
+from dccpi import *
 
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
@@ -16,6 +17,12 @@ class RealHardware(DummyHardware):
         super().__init__()
         self._command_functions = {'switch' : self.set_switch_state
         }
+        e = DCCRPiEncoder()
+        controller = DCCController(e)
+        train = DCCLocomotive("train", 6)
+
+        controller.register(train)
+        controller.start()
 
 
 

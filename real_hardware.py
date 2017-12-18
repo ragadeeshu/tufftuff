@@ -13,15 +13,19 @@ class RealHardware(DummyHardware):
         sleep(0.1)
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
 
+    def set_throttle_state(self, command):
+        print([command['value'])
+
     def __init__(self):
         super().__init__()
-        self._command_functions = {'switch' : self.set_switch_state
+        self._command_functions = {'switch' : self.set_switch_state,
+        'throttle' : self.set_throttle_state
         }
         e = DCCRPiEncoder()
         controller = DCCController(e)
-        train = DCCLocomotive("train", 6)
+        self._train = DCCLocomotive("train", 6)
 
-        controller.register(train)
+        controller.register(self._train)
         controller.start()
 
 

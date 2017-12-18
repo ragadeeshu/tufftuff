@@ -43,10 +43,23 @@
   
 <script>
 
+  var trainstopped = true;
   function train(){
-    $("#train").text(trains[trainindex]);
-    trainindex++;
+    var speed = throttle.getValue();
+    if (speed>0) {
+        trainindex++;
+    } else if (speed<0) {
+        trainindex--;
+    }
+    trainindex+=trains.length;
     trainindex%=trains.length;
+    $("#train").text(trains[trainindex]);
+    if (speed == 0) {
+        trainstopped = true;
+    } else {
+        trainstopped = false;
+        setTimeout(train, 280/Math.abs(speed));
+    }
   }
 
   function setState(state){
@@ -56,9 +69,9 @@
           var value = state[type][id]
           var direction;
           if (parseInt(id)%2) {
-              direction = "left";
+              direction = "right";
           } else {
-              direction="right";
+              direction="left";
           }
           $("."+type+"[value='"+id+"']").data("state", value);
           $("#switch"+id+"_image").attr("src", "./static/switch_"+direction+"_"+value+".png");
@@ -72,6 +85,9 @@
           --value;
         }
         throttle.setValue(value);
+        if (trainstopped) {
+            train();
+        }
       } else if (type == "lights") {
           var value = state[type]["1"]
           $('.lights').data("state", value);
@@ -175,12 +191,18 @@
       };
   }
 
+  //prevent zoom & bounce scroll (and also enables button touch effects???)
+  $(document).bind('touchmove',
+    function(e) {
+        e.preventDefault();
+    }
+  );
+
   // begin page load code
   var ws;
   $(document).ready(function () {
     $("div#controls").hide();
     $("#connection").hide();
-    setInterval(train, 40);
 
     $('.switch').on('click', switchClick);
                     
@@ -221,10 +243,10 @@
     </div>
     <div id ="controls">
         <div id="switches" align="center">
-            <button class="switch" value="1"><img id="switch1_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
-            <button class="switch" value="2"><img id="switch2_image" src="./static/switch_right_straight.png" height="98" width="60" /></button>
-            <button class="switch" value="3"><img id="switch3_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
-            <button class="switch" value="4"><img id="switch4_image" src="./static/switch_right_straight.png" height="98" width="60" /></button>
+            <button class="switch" value="1"><img id="switch1_image" src="./static/switch_right_straight.png" height="98" width="60" /></button>
+            <button class="switch" value="2"><img id="switch2_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
+            <button class="switch" value="3"><img id="switch3_image" src="./static/switch_right_straight.png" height="98" width="60" /></button>
+            <button class="switch" value="4"><img id="switch4_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
         </div>
         <div id="loco" align="center">
             <button class="lights"><img id="lights_image" src="./static/headlight_on.png" height="50" width="50" /></button>
@@ -234,6 +256,6 @@
     <div id="terminal">
     </div>
   </main>
-  <footer><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
+  <footer class="trainfooter"><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
 </body>
 </html>

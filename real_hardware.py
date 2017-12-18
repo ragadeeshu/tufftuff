@@ -14,16 +14,31 @@ class RealHardware(DummyHardware):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
 
     def set_throttle_state(self, command):
-        print(command)
+        speed = command['value']
+        if speed > 0 and self._direction == 0:
+            self._direction = 1
+            self._train.reverse()
+        elif speed < 0:
+            speed = -speed
+            if self.direction == 1:
+                self._direction = 0
+                self._train.reverse()
+        self._train.speed(speed)
+    
+    def set_lights_state(self, command):
+        self._train.fl(command['value'] == 'on')
 
     def __init__(self):
         super().__init__()
-        self._command_functions = {'switch' : self.set_switch_state,
-        'throttle' : self.set_throttle_state
+        self._command_functions = {
+        'switch' : self.set_switch_state,
+        'throttle' : self.set_throttle_state,
+        'lights' : self.set_lights_state
         }
         e = DCCRPiEncoder()
         controller = DCCController(e)
-        self._train = DCCLocomotive("train", 6)
+        self._train = DCCLocomotive("train", 6) #TODO real address is not 6
+        self._direction = 1
 
         controller.register(self._train)
         controller.start()

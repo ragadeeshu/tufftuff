@@ -25,7 +25,9 @@ class CommandQueue:
         self.queue({'type':'switch', 'id':'2', 'value':'straight'})
         self.queue({'type':'switch', 'id':'3', 'value':'straight'})
         self.queue({'type':'switch', 'id':'4', 'value':'straight'})
-
+        self.queue({'type':'throttle', 'id':'1', 'value':0})
+        self.queue({'type':'lights', 'id':'1', 'value':'off'})
+    
     def queue(self, command):
         self.lock.acquire()
         try:

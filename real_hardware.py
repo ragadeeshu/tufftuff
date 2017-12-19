@@ -10,7 +10,7 @@ class RealHardware(DummyHardware):
 
     def set_switch_state(self, command):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], RealHardware.switch_position[command['id']][command['value']])
-        sleep(0.1)
+        sleep(1.1)
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
 
     def set_throttle_state(self, command):
@@ -24,7 +24,7 @@ class RealHardware(DummyHardware):
                 self._direction = 0
                 self._train.reverse()
         self._train.speed(speed)
-    
+
     def set_lights_state(self, command):
         self._train.fl(command['value'] == 'on')
 

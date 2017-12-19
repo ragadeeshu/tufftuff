@@ -1,7 +1,7 @@
 from hardware import DummyHardware
 from time import sleep
 import pigpio
-from dccpi import *
+# from dccpi import *
 
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
@@ -17,16 +17,17 @@ class RealHardware(DummyHardware):
         speed = command['value']
         if speed > 0 and self._direction == 0:
             self._direction = 1
-            self._train.reverse()
+            # self._train.reverse()
         elif speed < 0:
             speed = -speed
             if self.direction == 1:
                 self._direction = 0
-                self._train.reverse()
-        self._train.speed(speed)
+                # self._train.reverse()
+        # self._train.speed(speed)
 
     def set_lights_state(self, command):
-        self._train.fl(command['value'] == 'on')
+        pass
+        # self._train.fl(command['value'] == 'on')
 
     def __init__(self):
         super().__init__()
@@ -35,14 +36,14 @@ class RealHardware(DummyHardware):
         'throttle' : self.set_throttle_state,
         'lights' : self.set_lights_state
         }
-        e = DCCRPiEncoder()
-        controller = DCCController(e)
-        self._train = DCCLocomotive("train", 6) #TODO real address is not 6
-        self._direction = 1
+        # e = DCCRPiEncoder()
+        # controller = DCCController(e)
+        # self._train = DCCLocomotive("train", 6) #TODO real address is not 6
+        # self._direction = 1
 
-        controller.register(self._train)
-        controller.start()
+        # controller.register(self._train)
 
+        # controller.start()
 
 
     def set_physical_state(self, command):

@@ -10,7 +10,7 @@ class RealHardware(DummyHardware):
 
     def set_switch_state(self, command):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], RealHardware.switch_position[command['id']][command['value']])
-        sleep(1.1)
+        sleep(0.1)
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
 
     def set_throttle_state(self, command):
@@ -39,7 +39,7 @@ class RealHardware(DummyHardware):
         # e = DCCRPiEncoder()
         # controller = DCCController(e)
         # self._train = DCCLocomotive("train", 6) #TODO real address is not 6
-        # self._direction = 1
+        self._direction = 1
 
         # controller.register(self._train)
 

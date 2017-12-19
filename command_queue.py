@@ -10,7 +10,7 @@ class CommandQueue:
         if type == 'dummy':
             self._hardware = hardware.DummyHardware();
         else:
-            
+
             real_hardware = __import__('real_hardware')
             self._hardware = real_hardware.RealHardware();
 
@@ -27,7 +27,7 @@ class CommandQueue:
         self.queue({'type':'switch', 'id':'4', 'value':'straight'})
         self.queue({'type':'throttle', 'id':'1', 'value':0})
         self.queue({'type':'lights', 'id':'1', 'value':'off'})
-    
+
     def queue(self, command):
         self.lock.acquire()
         try:
@@ -42,14 +42,17 @@ class CommandQueue:
     def do_next(self):
         while True:
             self._event.wait()
-            self._event.clear()
             self.lock.acquire()
+            self._event.clear()
+            batch = []
             try:
-                while self._command_list:
-                    self._hardware.set_physical_state(self._command_list[0])
-                    del(self._command_list[0])
+                if self._command_list:
+                    batch = self._command_list
+                    self._command_list = []
             finally:
                 self.lock.release()
+            for command in batch:
+                self._hardware.set_physical_state(command)
 
     def get_state(self):
         return self._hardware.get_logical_state()

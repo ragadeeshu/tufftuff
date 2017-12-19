@@ -20,7 +20,7 @@ class RealHardware(DummyHardware):
             # self._train.reverse()
         elif speed < 0:
             speed = -speed
-            if self.direction == 1:
+            if self._direction == 1:
                 self._direction = 0
                 # self._train.reverse()
         # self._train.speed(speed)

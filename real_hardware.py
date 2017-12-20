@@ -1,7 +1,7 @@
 from hardware import DummyHardware
 from time import sleep
 import pigpio
-# from dccpi import *
+from subprocess import Popen, PIPE, STDOUT
 
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
@@ -15,19 +15,15 @@ class RealHardware(DummyHardware):
 
     def set_throttle_state(self, command):
         speed = command['value']
-        if speed > 0 and self._direction == 0:
-            self._direction = 1
-            # self._train.reverse()
+        if speed > 0:
+            self._dccpi.communicate(input='direction tuff forward')
         elif speed < 0:
             speed = -speed
-            if self._direction == 1:
-                self._direction = 0
-                # self._train.reverse()
-        # self._train.speed(speed)
+            self._dccpi.communicate(input='direction tuff backward')
+        self._dccpi.communicate(input=('speed tuff '+speed))
 
     def set_lights_state(self, command):
-        pass
-        # self._train.fl(command['value'] == 'on')
+        self._dccpi.communicate(input=('fl tuff '+command[value]))
 
     def __init__(self):
         super().__init__()
@@ -36,14 +32,10 @@ class RealHardware(DummyHardware):
         'throttle' : self.set_throttle_state,
         'lights' : self.set_lights_state
         }
-        # e = DCCRPiEncoder()
-        # controller = DCCController(e)
-        # self._train = DCCLocomotive("train", 6) #TODO real address is not 6
-        self._direction = 1
 
-        # controller.register(self._train)
-
-        # controller.start()
+        self._dccpi = Popen(['dccpi'], stdout=STDOUT, stdin=PIPE, stderr=STDOUT)
+        self._dccpi.communicate(input='register tuff 6') #TODO real address is not 6
+        self._dccpi.communicate(input='power on')
 
 
     def set_physical_state(self, command):

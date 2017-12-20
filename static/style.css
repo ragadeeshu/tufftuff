@@ -38,14 +38,6 @@ button:active {
 	font-size: .5em;
 }
 
-.trainfooter {
-    -moz-transform: scale(-1, 1);
-    -webkit-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    -ms-transform: scale(-1, 1);
-    transform: scale(-1, 1);
-}
-
 #connection_details {
 	text-align: center;
 }
@@ -81,6 +73,7 @@ button:active {
     border-right-color: #000;
     margin: -11px 0px 0px 18px !important;
     border-width: 11px 85px 11px 0px;
+		transition: all .1s;
 }
 #throttle .rs-handle:before  {
     display: block;
@@ -92,17 +85,26 @@ button:active {
     right: -11px;
     bottom: -11px;
     border-radius: 100px;
+		transition: all .1s;
 }
 
-.rs-seperator { border: 100px solid #999999; }
+.rs-seperator { border: 100px solid #999999;
+	transition: all .1s; }
 .rs-border { border: 2px solid #999999;
-background-color: #F0C5C5; }
-.rs-path-color { background-color: #F0C5C5; }
-.rs-range-color { background-color: #DB5959; }
-.rs-bg-color { background-color: #DDD; }
-.rs-handle { background-color: #838383; }
-.rs-handle-dot { background-color: #FFFFFF; }
-.rs-handle-dot:after { background-color: #838383; }
+background-color: #F0C5C5;
+transition: all .1s; }
+.rs-path-color { background-color: #F0C5C5;
+	transition: all .1s; }
+.rs-range-color { background-color: #DB5959;
+	transition: all .1s; }
+.rs-bg-color { background-color: #DDD;
+	transition: all .1s; }
+.rs-handle { background-color: #838383;
+	transition: all .1s; }
+.rs-handle-dot { background-color: #FFFFFF;
+	transition: all .1s; }
+.rs-handle-dot:after { background-color: #838383;
+	transition: all .1s; }
 
 /*#throttle .rs-range-color  {*/
     /*background-color: #DB5959;*/

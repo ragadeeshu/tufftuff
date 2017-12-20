@@ -32,15 +32,15 @@
     }
 
   </style>
-  
+
   <link rel="stylesheet" type="text/css" href="{{ static_url("style.css") }}">
   <link rel="stylesheet" type="text/css" href="{{ static_url("roundslider.css") }}">
-  
+
   <script src="http://code.jquery.com/jquery.min.js"></script>
-  
+
   <script src="{{ static_url("train.js") }}"></script>
   <script src="{{ static_url("roundslider.js") }}"></script>
-  
+
 <script>
 
   var trainstopped = true;
@@ -169,7 +169,7 @@
           var message = JSON.parse(evt.data);
           setState(message);
       };
-      
+
       ws.onclose = function(evt) {
           $("div#controls").fadeOut("slow").promise().done(
             function(){
@@ -181,7 +181,7 @@
             }
           );
       };
-      
+
       ws.onopen = function(evt) {
           $("#connection").fadeOut("slow").promise().done(
             function(){
@@ -205,11 +205,11 @@
     $("#connection").hide();
 
     $('.switch').on('click', switchClick);
-                    
+
     $('.stop').on('click', stopClick);
-                    
+
     $('.lights').on('click', lightsClick);
-                    
+
     $("#throttle").roundSlider({
         animation: false,
         sliderType: "min-range",
@@ -227,9 +227,9 @@
         change: throttleChange,
         drag: throttleChange
     });
-    
+
     openSocket();
- 
+
   }
   );
 </script>
@@ -256,6 +256,6 @@
     <div id="terminal">
     </div>
   </main>
-  <footer class="trainfooter"><pre style="margin-bottom:0"><code id="train"></code></pre></footer>
+  <footer class="trainfooter"><pre style="margin:0"><code id="train"></code></pre></footer>
 </body>
 </html>

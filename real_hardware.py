@@ -36,7 +36,7 @@ class RealHardware(DummyHardware):
         'lights' : self.set_lights_state
         }
         outfile = open('dccpioutput', "w")
-        self._dccpi = Popen(['dccpi'], stdin=PIPE, stdout=outfile)
+        self._dccpi = Popen(['/home/pi/.go/bin/dccpi'], stdin=PIPE, stdout=outfile)
         self._dccpi.stdin.write(b'register tuff 6\n') #TODO real address is not 6
         self._dccpi.stdin.flush()
         self._dccpi.stdin.write(b'power on\n')

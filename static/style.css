@@ -95,8 +95,10 @@ background-color: #BBBBBB;
 transition: all .1s; }
 .rs-path-color { background-color: #BBBBBB;
 	transition: all .1s; }
-.rs-range-color { background-color: #DB5959;
+.rs-range-color { background-color: #DB3838;
 	transition: all .1s; }
+.rs-range2-color { background-color: #228B22;
+    transition: all .1s; }
 .rs-bg-color { background-color: #CCCCCC;
 	transition: all .1s; }
 .rs-handle { background-color: #838383;

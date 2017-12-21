@@ -1,5 +1,5 @@
 body {
-	background: #DDD;
+	background: #CCCCCC;
 	color:#000;
 }
 
@@ -18,7 +18,7 @@ button {
   text-align: center;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  background: #ffffff;
+  background: #FFFFFF;
   -webkit-box-shadow: 3px 3px 0 0 rgba(40,40,40,0.8) ;
   box-shadow: 3px 3px 0 0 rgba(40,40,40,0.8) ;
   text-shadow: 1px 1px 1px rgba(40,40,40,0.2) ;
@@ -88,20 +88,20 @@ button:active {
 		transition: all .1s;
 }
 
-.rs-seperator { border: 100px solid #999999;
+.rs-seperator { border: 100px solid #777777;
 	transition: all .1s; }
-.rs-border { border: 2px solid #999999;
-background-color: #F0C5C5;
+.rs-border { border: 2px solid #777777;
+background-color: #BBBBBB;
 transition: all .1s; }
-.rs-path-color { background-color: #F0C5C5;
+.rs-path-color { background-color: #BBBBBB;
 	transition: all .1s; }
 .rs-range-color { background-color: #DB5959;
 	transition: all .1s; }
-.rs-bg-color { background-color: #DDD;
+.rs-bg-color { background-color: #CCCCCC;
 	transition: all .1s; }
 .rs-handle { background-color: #838383;
 	transition: all .1s; }
-.rs-handle-dot { background-color: #FFFFFF;
+.rs-handle-dot { background-color: #CCCCCC;
 	transition: all .1s; }
 .rs-handle-dot:after { background-color: #838383;
 	transition: all .1s; }

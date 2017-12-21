@@ -76,7 +76,7 @@
           $("."+type+"[value='"+id+"']").data("state", value);
           $("#switch"+id+"_image").attr("src", "./static/switch_"+direction+"_"+value+".png");
         }
-      } else if (type == "throttle") {
+      } else if (type == "throttle" && !dragging) {
         //shift value received from 2-14 to 1-13
         var value = state[type]["1"]
         if (value < 0) {
@@ -147,8 +147,10 @@
       throttle = this;
   }
 
+  var dragging = false;
   throttleChange = function(event) {
     var value = event.value;
+    dragging = event.type == "drag";
     //"1" is emergency stop, so shift value sent from 1-13 to 2-14
     if (value < 0) {
         --value;

@@ -1,6 +1,6 @@
+import pigpio
 from hardware import DummyHardware
 from time import sleep
-import pigpio
 from subprocess import Popen, PIPE, STDOUT
 
 class RealHardware(DummyHardware):
@@ -16,14 +16,17 @@ class RealHardware(DummyHardware):
     def set_throttle_state(self, command):
         speed = command['value']
         if speed > 0:
-            self._dccpi.communicate(input='direction tuff forward')
+            self._dccpi.stdin.write(b'direction tuff forward\n')
+            self._dccpi.stdin.flush()
         elif speed < 0:
             speed = -speed
-            self._dccpi.communicate(input='direction tuff backward')
-        self._dccpi.communicate(input=('speed tuff '+speed))
+            self._dccpi.stdin.write(b'direction tuff backward\n')
+            self._dccpi.stdin.flush()
+        self._dccpi.stdin.write(bytes('speed tuff ' + str(speed) + '\n', 'utf-8'))
+        self._dccpi.stdin.flush()
 
     def set_lights_state(self, command):
-        self._dccpi.communicate(input=('fl tuff '+command[value]))
+        self._dccpi.stdin.write(bytes('fl tuff ' + command['value'] + '\n', 'utf-8'))
 
     def __init__(self):
         super().__init__()
@@ -32,10 +35,12 @@ class RealHardware(DummyHardware):
         'throttle' : self.set_throttle_state,
         'lights' : self.set_lights_state
         }
-
-        self._dccpi = Popen(['dccpi'], stdout=STDOUT, stdin=PIPE, stderr=STDOUT)
-        self._dccpi.communicate(input='register tuff 6') #TODO real address is not 6
-        self._dccpi.communicate(input='power on')
+        outfile = open('dccpioutput', "w")
+        self._dccpi = Popen(['dccpi'], stdin=PIPE, stdout=outfile)
+        self._dccpi.stdin.write(b'register tuff 6\n') #TODO real address is not 6
+        self._dccpi.stdin.flush()
+        self._dccpi.stdin.write(b'power on\n')
+        self._dccpi.stdin.flush()
 
 
     def set_physical_state(self, command):

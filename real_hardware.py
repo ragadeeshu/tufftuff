@@ -37,7 +37,7 @@ class RealHardware(DummyHardware):
         }
         outfile = open('dccpioutput', "w")
         self._dccpi = Popen(['/home/pi/.go/bin/dccpi'], stdin=PIPE, stdout=outfile)
-        self._dccpi.stdin.write(b'register tuff 6\n') #TODO real address is not 6
+        self._dccpi.stdin.write(b'register tuff 3\n') #Default decoder address is 3
         self._dccpi.stdin.flush()
         self._dccpi.stdin.write(b'power on\n')
         self._dccpi.stdin.flush()

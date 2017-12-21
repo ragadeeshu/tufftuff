@@ -143,12 +143,13 @@
             path = this.$createElement("div.rs-path rs-transition");
 
             if (this._rangeSlider || this._showRange) {
-                this.block1 = path.clone().addClass("rs-range-color").rsRotate(start);
+                this.block1 = path.clone().addClass("rs-range-color").rsRotate(start-90);
+                this.block1b = path.clone().addClass("rs-range2-color").rsRotate(start+90);
                 this.block2 = path.clone().addClass("rs-path-color").rsRotate(start);
                 this.block3 = path.clone().addClass("rs-path-color").rsRotate(start);
                 this.block4 = path.addClass("rs-path-color").css({ "opacity": "1", "z-index": "1" }).rsRotate(start - 180);
 
-                this.block.append(this.block1, this.block2, this.block3, this.block4).addClass("rs-split");
+                this.block.append(this.block1, this.block1b, this.block2, this.block3, this.block4).addClass("rs-split");
             }
             else this.block.append(path.addClass("rs-path-color"));
 
@@ -591,11 +592,11 @@
                 //this.block2.css("opacity", o2);
                 this.block3.css("opacity", o3);
                 if (lAngle < 90) {
- this.block2.rsRotate(lAngle - 180);
- this.block3.rsRotate(90);
+                    this.block2.rsRotate(lAngle - 180);
+                    this.block3.rsRotate(90);
                 } else {
- this.block2.rsRotate(-90);
- this.block3.rsRotate(lAngle);
+                    this.block2.rsRotate(-90);
+                    this.block3.rsRotate(lAngle);
                 }
                 //(this._active == 1 ? this.block4 : this.block2).rsRotate(lAngle - 180);
                 //(this._active == 1 ? this.block1 : this.block3).rsRotate(lAngle);

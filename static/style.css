@@ -59,10 +59,11 @@ button:active {
 
 .rslider {
     margin-top: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .stop {
+    margin-top: 10px;
     -webkit-appearance: none;
     height: 30px;
 }

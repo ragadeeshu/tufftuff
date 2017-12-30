@@ -84,6 +84,7 @@
         } else if (value > 0) {
           --value;
         }
+        printSpeed(value);
         throttle.setValue(value);
         if (trainstopped) {
             train();
@@ -150,6 +151,7 @@
   var dragging = false;
   throttleChange = function(event) {
     var value = event.value;
+    printSpeed(value);
     dragging = event.type == "drag";
     //"1" is emergency stop, so shift value sent from 1-13 to 2-14
     if (value < 0) {
@@ -166,6 +168,26 @@
         train();
     }
     ws.send(JSON.stringify(throttleMessage));
+  }
+
+  function printSpeed(speed) {
+    var nonLinearSpeeds = [35,48,59,71,84,89];
+    var val = speed;
+    if (val == 0) {
+        $("#speed").html("&nbsp;");
+        return;
+    }
+    var abs = Math.abs(val);
+    if (abs < 8) {
+        val *= 4;
+    } else {
+        if (val < 0) {
+            val = -nonLinearSpeeds[abs - 8];
+        } else {
+            val = nonLinearSpeeds[abs - 8];
+        }
+    }
+    $("#speed").html(val + " km/h");
   }
 
   function openSocket() {
@@ -257,6 +279,7 @@
         <div id="loco" align="center">
             <button class="lights"><img id="lights_image" src="./static/headlight_on.png" height="50" width="50" /></button>
             <div class="rslider" id="throttle"></div>
+            <div id="speed">&nbsp;</div>
             <button class="stop">STOP</button>
         </div>
     <div id="terminal">

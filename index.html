@@ -77,13 +77,7 @@
           $("#switch"+id+"_image").attr("src", "./static/switch_"+direction+"_"+value+".png");
         }
       } else if (type == "throttle" && !dragging) {
-        //shift value received from 2-14 to 1-13
         var value = state[type]["1"]
-        if (value < 0) {
-          ++value;
-        } else if (value > 0) {
-          --value;
-        }
         printSpeed(value);
         throttle.setValue(value);
         if (trainstopped) {
@@ -153,11 +147,11 @@
     var value = event.value;
     printSpeed(value);
     dragging = event.type == "drag";
-    //"1" is emergency stop, so shift value sent from 1-13 to 2-14
-    if (value < 0) {
-        --value;
-    } else if (value > 0) {
+    //"1" is emergency stop, let us not do that
+    if (value == 1) {
         ++value;
+    } else if (value  == -1) {
+        --value;
     }
     throttleMessage={
         "type":"throttle",
@@ -243,8 +237,8 @@
         editableTooltip: false,
         radius: 105,
         width: 16,
-        min: -28,
-        max:28,
+        min: -32,
+        max:32,
         value: 0,
         handleSize: 0,
         handleShape: "square",

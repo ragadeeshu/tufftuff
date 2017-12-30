@@ -27,6 +27,7 @@ class RealHardware(DummyHardware):
 
     def set_lights_state(self, command):
         self._dccpi.stdin.write(bytes('fl tuff ' + command['value'] + '\n', 'utf-8'))
+        self._dccpi.stdin.flush()
 
     def __init__(self):
         super().__init__()

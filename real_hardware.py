@@ -35,7 +35,9 @@ class RealHardware(DummyHardware):
         self._dccpi.stdin.write(b'power on\n')
         self._dccpi.stdin.flush()
         while True:
-            self._dccpi.stin.write(self._dccpi_queue.get())
+            command = self._dccpi_queue.get()
+            print(command)
+            self._dccpi.stin.write(command)
             self._dccpi.stdin.flush()
 
 

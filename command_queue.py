@@ -1,9 +1,8 @@
 import hardware
 import os
 # import connections
-from threading import Thread
 from queue import Queue
-from threading import Lock
+from multiprocessing import Lock, Queue, Process
 import time
 class CommandQueue:
     def __init__(self, clients, type):
@@ -16,7 +15,7 @@ class CommandQueue:
 
         self._clients = clients
         self._command_queue =Queue()
-        self._hardware_change_applier = Thread(target=self.do_next, args=())
+        self._hardware_change_applier = Process(target=self.do_next)
         self._hardware_change_applier.start()
         self.lock = Lock()
 

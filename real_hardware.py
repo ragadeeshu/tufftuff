@@ -1,7 +1,7 @@
 import pigpio
 from hardware import DummyHardware
 from time import sleep
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT, DEVNULL
 from multiprocessing import Queue, Process
 
 class RealHardware(DummyHardware):
@@ -28,15 +28,13 @@ class RealHardware(DummyHardware):
         self._dccpi_queue.put(bytes('fl tuff ' + command['value'] + '\n', 'utf-8'))
 
     def do_dccpi(self):
-        outfile = open('dccpioutput', "w")
-        self._dccpi = Popen(['/home/pi/go/bin/dccpi'], stdin=PIPE, stdout=outfile)
+        self._dccpi = Popen(['/home/pi/go/bin/dccpi'], stdin=PIPE, stdout=DEVNULL)
         self._dccpi.stdin.write(b'register tuff 3\n') #Default decoder address is 3
         self._dccpi.stdin.flush()
         self._dccpi.stdin.write(b'power on\n')
         self._dccpi.stdin.flush()
         while True:
             command = self._dccpi_queue.get()
-            print(command)
             self._dccpi.stdin.write(command)
             self._dccpi.stdin.flush()
 

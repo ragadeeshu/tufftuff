@@ -37,7 +37,7 @@ class RealHardware(DummyHardware):
         while True:
             command = self._dccpi_queue.get()
             print(command)
-            self._dccpi.stin.write(command)
+            self._dccpi.stdin.write(command)
             self._dccpi.stdin.flush()
 
 

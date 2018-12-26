@@ -12,6 +12,7 @@ class RealHardware(DummyHardware):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], RealHardware.switch_position[command['id']][command['value']])
         sleep(0.1)
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], 0)
+        sleep(0.1)
 
     def set_throttle_state(self, command):
         speed = command['value']

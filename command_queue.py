@@ -2,7 +2,7 @@ import hardware
 import os
 # import connections
 from threading import Thread
-from threading import Event
+from queue import Queue
 from threading import Lock
 import time
 class CommandQueue:
@@ -15,8 +15,7 @@ class CommandQueue:
             self._hardware = real_hardware.RealHardware();
 
         self._clients = clients
-        self._command_list = []
-        self._event = Event()
+        self._command_queue =Queue()
         self._hardware_change_applier = Thread(target=self.do_next, args=())
         self._hardware_change_applier.start()
         self.lock = Lock()
@@ -31,9 +30,8 @@ class CommandQueue:
     def queue(self, command):
         self.lock.acquire()
         try:
-            self._command_list.append(command)
+            self._command_queue.put(command)
             self._hardware.set_logical_state(command)
-            self._event.set()
         finally:
             self.lock.release()
         self._clients.message_clients(self._hardware.get_logical_state())
@@ -41,18 +39,7 @@ class CommandQueue:
 
     def do_next(self):
         while True:
-            self._event.wait()
-            self.lock.acquire()
-            self._event.clear()
-            batch = []
-            try:
-                if self._command_list:
-                    batch = self._command_list
-                    self._command_list = []
-            finally:
-                self.lock.release()
-            for command in batch:
-                self._hardware.set_physical_state(command)
+            self._hardware.set_physical_state(self._command_queue.get())
 
     def get_state(self):
         return self._hardware.get_logical_state()

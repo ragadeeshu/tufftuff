@@ -1,6 +1,5 @@
 import os
 import uuid
-import _thread
 import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop

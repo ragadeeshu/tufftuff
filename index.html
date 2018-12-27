@@ -96,6 +96,12 @@
           var value = state[type]["1"]
           $('.lights').data("state", value);
           $("#lights_image").attr("src", "./static/headlight_"+value+".png");
+      } else if (type == "loop") {
+        for (const id of Object.keys(state[type])) {
+          var value = state[type][id]
+          $('.lights').data("state", value);
+          $("#loop"+id+"_image").attr("src", "./static/headlight_"+value+".png");
+        }
       }
     }
   }
@@ -120,6 +126,16 @@
     ws.send(JSON.stringify(switchMessage));
   }
 
+  loopClick = function() {
+      var state = $(this).data("state")
+      loopMessage={
+          "type":"loop",
+          "id":$(this).val(),
+          "value":"on"
+      };
+      ws.send(JSON.stringify(loopMessage));
+  }
+
   stopClick = function() {
       //what is the difference between stop (0) and emergency stop (1)?
       throttle.setValue(0);
@@ -130,6 +146,22 @@
       };
       ws.send(JSON.stringify(throttleMessage));
   }
+
+  manualClick = function() {
+      $("#loops").fadeOut("fast").promise().done(
+        function(){
+            $("#switches").fadeIn("fast");
+        }
+      );
+    }
+
+    semiautoClick = function() {
+      $("#switches").fadeOut("fast").promise().done(
+        function(){
+            $("#loops").fadeIn("fast");
+        }
+      );
+    }
 
   lightsClick = function() {
       var state = $('.lights').data("state")
@@ -233,8 +265,12 @@
   $(document).ready(function () {
     $("div#controls").hide();
     $("#connection").hide();
+    $("#switches").hide();
 
     $('.switch').on('click', switchClick);
+    $('.loop').on('click', loopClick);
+    $('#manual').on('click', manualClick);
+    $('#semiauto').on('click', semiautoClick);
 
     $('.stop').on('click', stopClick);
 
@@ -277,6 +313,15 @@
             <button class="switch" value="2"><img id="switch2_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
             <button class="switch" value="3"><img id="switch3_image" src="./static/switch_right_straight.png" height="98" width="60" /></button>
             <button class="switch" value="4"><img id="switch4_image" src="./static/switch_left_straight.png" height="98" width="60" /></button>
+            <br>
+            <button id="semiauto">Swich to loops</button>
+        </div>
+        <div id="loops" align="center">
+            <button class="loop" value="1"><img id="loop1_image" src="./static/headlight_on.png" height="98" width="60" /></button>
+            <button class="loop" value="2"><img id="loop2_image" src="./static/headlight_on.png" height="98" width="60" /></button>
+            <button class="loop" value="3"><img id="loop3_image" src="./static/headlight_on.png" height="98" width="60" /></button>
+            <br>
+            <button id="manual">Swich to manual</button>
         </div>
         <div id="loco" align="center">
             <button class="lights"><img id="lights_image" src="./static/headlight_on.png" height="50" width="50" /></button>

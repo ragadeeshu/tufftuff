@@ -4,6 +4,7 @@ class DummyHardware:
 
     def set_logical_state(self, command):
         self._state.setdefault(command['type'],{})[command['id']]=command['value']
+        
 
 
     def set_physical_state(self, command):

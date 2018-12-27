@@ -42,11 +42,16 @@ button:active {
 	text-align: center;
 }
 
-#switches {
+#switches, #loops {
     margin-top: 20px;
 }
 
-.switch {
+#manual, #semiauto {
+		margin-top: 10px;
+		padding: 10px;
+}
+
+.switch, .loop {
     -webkit-appearance: none;
     padding-top: 5px;
     padding-bottom: 5px;

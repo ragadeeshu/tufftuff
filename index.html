@@ -100,7 +100,7 @@
         for (const id of Object.keys(state[type])) {
           var value = state[type][id]
           $('.lights').data("state", value);
-          $("#loop"+id+"_image").attr("src", "./static/headlight_"+value+".png");
+          $("#loop"+id+"_image").attr("src", "./static/loop_"+id+"_"+value+".png");
         }
       }
     }
@@ -317,9 +317,9 @@
             <button id="semiauto">Swich to loops</button>
         </div>
         <div id="loops" align="center">
-            <button class="loop" value="1"><img id="loop1_image" src="./static/headlight_on.png" height="98" width="60" /></button>
-            <button class="loop" value="2"><img id="loop2_image" src="./static/headlight_on.png" height="98" width="60" /></button>
-            <button class="loop" value="3"><img id="loop3_image" src="./static/headlight_on.png" height="98" width="60" /></button>
+            <button class="loop" value="1"><img id="loop1_image" src="./static/loop_1_off.png" height="98" width="60" /></button>
+            <button class="loop" value="2"><img id="loop2_image" src="./static/loop_2_off.png" height="98" width="60" /></button>
+            <button class="loop" value="3"><img id="loop3_image" src="./static/loop_3_off.png" height="98" width="60" /></button>
             <br>
             <button id="manual">Swich to manual</button>
         </div>

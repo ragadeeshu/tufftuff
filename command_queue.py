@@ -47,6 +47,7 @@ class CommandQueue:
                 self._hardware.set_logical_state(command)
                 for subcommand in CommandQueue.loop_commands[command['id']]:
                     self._command_queue.put(subcommand)
+                    self._hardware.set_logical_state(subcommand)
 
             else:
                 self._command_queue.put(command)

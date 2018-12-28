@@ -1,9 +1,7 @@
 import pigpio
 from hardware import DummyHardware
 from time import sleep
-from subprocess import Popen, PIPE, STDOUT, DEVNULL
-from queue import Queue
-from threading import Thread
+from subprocess import Popen, PIPE, STDOUT
 
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
@@ -19,26 +17,18 @@ class RealHardware(DummyHardware):
     def set_throttle_state(self, command):
         speed = command['value']
         if speed > 0:
-            self._dccpi_queue.put(b'direction tuff forward\n')
+            self._dccpi.stdin.write(b'direction tuff forward\n')
+            self._dccpi.stdin.flush()
         elif speed < 0:
             speed = -speed
-            self._dccpi_queue.put(b'direction tuff backward\n')
-        self._dccpi_queue.put(bytes('speed tuff ' + str(speed) + '\n', 'utf-8'))
+            self._dccpi.stdin.write(b'direction tuff backward\n')
+            self._dccpi.stdin.flush()
+        self._dccpi.stdin.write(bytes('speed tuff ' + str(speed) + '\n', 'utf-8'))
+        self._dccpi.stdin.flush()
 
     def set_lights_state(self, command):
-        self._dccpi_queue.put(bytes('fl tuff ' + command['value'] + '\n', 'utf-8'))
-
-    def do_dccpi(self):
-        self._dccpi = Popen(['/home/pi/go/bin/dccpi'], stdin=PIPE, stdout=DEVNULL)
-        self._dccpi.stdin.write(b'register tuff 3\n') #Default decoder address is 3
+        self._dccpi.stdin.write(bytes('fl tuff ' + command['value'] + '\n', 'utf-8'))
         self._dccpi.stdin.flush()
-        self._dccpi.stdin.write(b'power on\n')
-        self._dccpi.stdin.flush()
-        while True:
-            command = self._dccpi_queue.get()
-            self._dccpi.stdin.write(command)
-            self._dccpi.stdin.flush()
-
 
     def __init__(self):
         super().__init__()
@@ -47,9 +37,13 @@ class RealHardware(DummyHardware):
         'throttle' : self.set_throttle_state,
         'lights' : self.set_lights_state
         }
-        self._dccpi_queue =Queue()
-        self._dccpu_applier = Thread(target=self.do_dccpi)
-        self._dccpu_applier.start()
+        outfile = open('dccpioutput', "w")
+        self._dccpi = Popen(['/home/pi/go/bin/dccpi'], stdin=PIPE, stdout=outfile)
+        self._dccpi.stdin.write(b'register tuff 3\n') #Default decoder address is 3
+        self._dccpi.stdin.flush()
+        self._dccpi.stdin.write(b'power on\n')
+        self._dccpi.stdin.flush()
+
 
     def set_physical_state(self, command):
         self._command_functions.get(command['type'], super().set_physical_state)(command)

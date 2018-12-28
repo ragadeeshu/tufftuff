@@ -2,7 +2,7 @@ import pigpio
 from hardware import DummyHardware
 from time import sleep
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 
 class RealHardware(DummyHardware):

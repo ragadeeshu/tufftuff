@@ -2,7 +2,8 @@ import pigpio
 from hardware import DummyHardware
 from time import sleep
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
-from multiprocessing import Queue, Process
+from Queue import Queue
+from threading import Thread
 
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
@@ -47,7 +48,7 @@ class RealHardware(DummyHardware):
         'lights' : self.set_lights_state
         }
         self._dccpi_queue =Queue()
-        self._dccpu_applier = Process(target=self.do_dccpi)
+        self._dccpu_applier = Thread(target=self.do_dccpi)
         self._dccpu_applier.start()
 
     def set_physical_state(self, command):

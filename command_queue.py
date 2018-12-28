@@ -45,7 +45,7 @@ class CommandQueue:
 
             if command['type'] == "loop" and command['value'] == 'on':
                 self._hardware.set_logical_state(command)
-                for subcommand in CommandQueue.loop_commands[command['id']]:
+                for subcommand in reversed(CommandQueue.loop_commands[command['id']]):
                     self._command_queue.put(subcommand)
                     self._hardware.set_logical_state(subcommand)
 

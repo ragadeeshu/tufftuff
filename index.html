@@ -99,7 +99,6 @@
       } else if (type == "loop") {
         for (const id of Object.keys(state[type])) {
           var value = state[type][id]
-          $('.lights').data("state", value);
           $("#loop"+id+"_image").attr("src", "./static/loop_"+id+"_"+value+".png");
         }
       }

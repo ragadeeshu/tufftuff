@@ -7,7 +7,7 @@ from multiprocessing import Queue, Process
 class RealHardware(DummyHardware):
     pi = pigpio.pi()
     switch_pin = {'1':26, '2':16, '3':6, '4':5}
-    switch_position = {'1':{'straight':1190, 'curve':1625}, '2':{'straight':1650, 'curve':1270}, '3':{'straight':1160, 'curve':1600}, '4':{'straight':1260, 'curve':880}}
+    switch_position = {'1':{'straight':1190, 'curve':1625}, '2':{'straight':1650, 'curve':1270}, '3':{'straight':1160, 'curve':1600}, '4':{'straight':1200, 'curve':850}}
 
     def set_switch_state(self, command):
         RealHardware.pi.set_servo_pulsewidth(RealHardware.switch_pin[command['id']], RealHardware.switch_position[command['id']][command['value']])
